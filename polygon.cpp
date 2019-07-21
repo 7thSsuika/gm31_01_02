@@ -58,9 +58,9 @@ void CPolygon::Draw()
 	UINT offset = 0;
 	CRenderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 	CRenderer::SetTexture(m_Texture);
-	XMMATRIX world;
+	//XMMATRIX world;
 	
-	CRenderer::SetWorldViewProjection2D(world);
+	CRenderer::SetWorldViewProjection2D();
 	CRenderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	CRenderer::GetDeviceContext()->Draw(4, 0);
 }
