@@ -1,13 +1,12 @@
 
 #include "main.h"
 #include "renderer.h"
-#include "model.h"
 #include "input.h"
 #include "manager.h"
-#include "bullet.h"
 #include "camera.h"
 #include "field.h"
 #include "model.h"
+#include "bullet.h"
 #include "player.h"
 #include "polygon.h"
 #include "enemy.h"
@@ -23,12 +22,18 @@ void Player::Init()
 	m_Scale = XMFLOAT3(2.0f, 2.0f, 2.0f);
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
+
+	animModel = new CModelAnimation();
+	animModel->Load("asset/Model/me.fbx");
 }
 
 void Player::Uninit()
 {
 	model->Unload();
 	delete model;
+
+	animModel->Unload();
+	delete animModel;
 }
 
 void Player::Update()
@@ -67,5 +72,6 @@ void Player::Draw()
 	world *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	CRenderer::SetWorldMatrix(&world);
 
-	model->Draw();
+	//model->Draw();
+	animModel->Draw();
 }

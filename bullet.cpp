@@ -2,8 +2,8 @@
 #include <vector>
 #include "main.h"
 #include "renderer.h"
-#include "model.h"
 #include "texture.h"
+#include "model.h"
 
 #include "scene.h"
 #include "manager.h"
