@@ -11,7 +11,6 @@ void Enemy::Init()
 {
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
-	model->SetMaterialColor(COLOR(1.0f, 0.4f, 0.4f, 1.0f));
 
 	m_Position = XMFLOAT3(rand() % 300 / 10.0f - 15.0f, 1.0f, rand() % 400 / 10.0f);
 	m_Rotation = XMFLOAT3(0.0f, 3.0f, 0.0f);
