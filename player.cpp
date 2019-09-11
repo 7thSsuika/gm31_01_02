@@ -19,7 +19,7 @@ void Player::Init()
 {
 	m_Position = XMFLOAT3(0.0f, 1.0f, -5.0f);
 	m_Rotation = XMFLOAT3(0.0f, 3.0f, 0.0f);
-	m_Scale = XMFLOAT3(2.0f, 2.0f, 2.0f);
+	m_Scale = XMFLOAT3(0.0020f, 0.0020f, 0.0020f);
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
 
@@ -73,5 +73,5 @@ void Player::Draw()
 	CRenderer::SetWorldMatrix(&world);
 
 	//model->Draw();
-	animModel->Draw();
+	animModel->Draw(world);
 }

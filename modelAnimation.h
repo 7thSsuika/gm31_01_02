@@ -13,8 +13,8 @@ private:
 	const aiScene* m_Scene;
 public:
 	void Draw();
-	void Draw(XMMATRIX Matrix);
-	void DrawMesh(aiNode* Node, XMMATRIX Matrix);
+	void Draw(XMMATRIX& Matrix);
+	void DrawMesh(aiNode* Node, XMMATRIX& Matrix);
 	void Load(const char* FileName);
 	void Unload();
 };
