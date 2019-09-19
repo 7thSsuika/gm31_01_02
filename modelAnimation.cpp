@@ -49,6 +49,7 @@ void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
 
 void CModelAnimation::Load(const char * FileName)
 {
+	int ix = 0;
 	this->m_Scene = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality);
 	m_MeshNum = m_Scene->mNumMeshes;
 	m_Mesh = new MESH[m_MeshNum];
