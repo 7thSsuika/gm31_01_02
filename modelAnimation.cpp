@@ -18,9 +18,17 @@ void CModelAnimation::Draw(XMMATRIX& Matrix)
 
 void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
 {
-	aiMatrix4x4 matrix = Node->mTransformation;
-	aiTransposeMatrix4(&matrix);
-	XMMATRIX world = XMLoadFloat4x4((XMFLOAT4X4*)&matrix);
+	//aiMatrix4x4 matrix = Node->mTransformation;
+	//aiTransposeMatrix4(&matrix);
+	//XMMATRIX  mat = XMLoadFloat4x4((XMFLOAT4X4*)&matrix);
+	XMMATRIX world = XMMatrixIdentity();
+	aiQuaternion aiQuat = m_NodeRotation[Node->mName.C_Str()];
+	XMVECTOR quat = XMLoadFloat4(&XMFLOAT4(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w));
+	world = XMMatrixRotationQuaternion(quat);
+	aiVector3D aiVec = m_NodePosition[Node->mName.C_Str()];
+	XMMATRIX trans = XMMatrixTranslation(aiVec.x, aiVec.y, aiVec.z);
+	//world =  mat * world;
+	world *= trans;
 	world *= Matrix;
 
 	CRenderer::SetWorldMatrix(&world);
@@ -112,4 +120,17 @@ void CModelAnimation::Unload()
 	}
 	delete[] m_Mesh;
 	aiReleaseImport(m_Scene);
+}
+
+void CModelAnimation::Update(int Frame)
+{
+	aiAnimation* animation = m_Scene->mAnimations[0];
+	for (int c = 0; c < animation->mNumChannels; c++)
+	{
+		aiNodeAnim* nodeAnim = animation->mChannels[c];
+		int f = Frame % nodeAnim->mNumRotationKeys;
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = nodeAnim->mRotationKeys[f].mValue;
+		f = Frame % nodeAnim->mNumPositionKeys;
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = nodeAnim->mPositionKeys[f].mValue;
+	}
 }
