@@ -43,9 +43,9 @@ void CManager::Uninit()
 
 void CManager::Update()
 {
-	CInput::Update();
 
 	scene->Update();
+	CInput::Update();
 }
 
 void CManager::Draw()

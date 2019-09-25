@@ -4,6 +4,7 @@
 
 
 
+
 void CModelAnimation::Draw()
 {
 	//CRenderer::SetVertexBuffers(m_VertexBuffer);
@@ -49,7 +50,6 @@ void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
 
 void CModelAnimation::Load(const char * FileName)
 {
-	int ix = 0;
 	this->m_Scene = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality);
 	m_MeshNum = m_Scene->mNumMeshes;
 	m_Mesh = new MESH[m_MeshNum];
@@ -123,6 +123,20 @@ void CModelAnimation::Unload()
 	aiReleaseImport(m_Scene);
 }
 
+//void CModelAnimation::Update(int Animation1, int Animation2, float Blend, int Frame);
+/*{
+	aiAnimation* animation1 = m_Scene[1]->mAnimations[0];
+	aiAnimation* animation2 = m_Scene[2]->mAnimations[0];
+	for (int c = 0; c < animation->mNumChannels; c++)
+	{
+		aiNodeAnim* nodeAnim1 = animation1->mChannels[c];
+		aiNodeAnim* nodeAnim2 = animation2->mChannels[c];
+		int f = Frame % nodeAnim->mNumRotationKeys;
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = ‹…–ÊüŒ`•âŠÔ aiQuaternion::Interpolate
+		f = Frame % nodeAnim->mNumPositionKeys;
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = üŒ`•âŠÔ
+	}
+}*/
 void CModelAnimation::Update(int Frame)
 {
 	aiAnimation* animation = m_Scene->mAnimations[0];

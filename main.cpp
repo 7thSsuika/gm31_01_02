@@ -3,7 +3,7 @@
 
 #include "main.h"
 #include "manager.h"
-
+#include "input.h"
 
 const char* CLASS_NAME = "DX11AppClass";
 const char* WINDOW_NAME = "DX11";
@@ -13,7 +13,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
 HWND g_Window;
-
 HWND GetWindow()
 {
 	return g_Window;
@@ -101,7 +100,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 				// çXêVèàóù
 				CManager::Update();
-
 				// ï`âÊèàóù
 				CManager::Draw();
 			}
@@ -128,6 +126,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	switch(uMsg)
 	{
+	case WM_ACTIVATEAPP:
+	    Keyboard::ProcessMessage(uMsg, wParam, lParam);
+   case WM_INPUT:
+   case WM_MOUSEMOVE:
+   case WM_LBUTTONDOWN:
+   case WM_LBUTTONUP:
+   case WM_RBUTTONDOWN:
+   case WM_RBUTTONUP:
+   case WM_MBUTTONDOWN:
+   case WM_MBUTTONUP:
+   case WM_MOUSEWHEEL:
+   case WM_XBUTTONDOWN:
+   case WM_XBUTTONUP:
+   case WM_MOUSEHOVER:
+       Mouse::ProcessMessage(uMsg, wParam, lParam);
+       break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -138,11 +152,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case VK_ESCAPE:
 			DestroyWindow(hWnd);
 			break;
-		}
-		break;
-
-	default:
-		break;
+		}  
+	case WM_SYSKEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+	    Keyboard::ProcessMessage(uMsg, wParam, lParam);
+	    break;
 	}
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);

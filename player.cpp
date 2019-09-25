@@ -19,12 +19,12 @@ void Player::Init()
 {
 	m_Position = XMFLOAT3(0.0f, 1.0f, -5.0f);
 	m_Rotation = XMFLOAT3(0.0f, 3.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.20f, 0.20f, 0.20f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
 
 	animModel = new CModelAnimation();
-	animModel->Load("asset/Model/me2.fbx");
+	animModel->Load("asset/Model/monkeyKing.fbx");
 }
 
 void Player::Uninit()

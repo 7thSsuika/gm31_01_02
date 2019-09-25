@@ -17,6 +17,7 @@ private:
 	std::map<std::string, aiQuaternion> m_NodeRotation;
 	std::map<std::string, aiVector3D> m_NodePosition;
 public:
+	//void CModelAnimationUpdate(int Animation1, int Animation2, float Blend, int Frame);
 	void Draw();
 	void Draw(XMMATRIX& Matrix);
 	void DrawMesh(aiNode* Node, XMMATRIX& Matrix);
