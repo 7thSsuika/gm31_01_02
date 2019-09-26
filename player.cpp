@@ -19,12 +19,12 @@ void Player::Init()
 {
 	m_Position = XMFLOAT3(0.0f, 1.0f, -5.0f);
 	m_Rotation = XMFLOAT3(0.0f, 3.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.0020f, 0.0020f, 0.0020f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
 
 	animModel = new CModelAnimation();
-	animModel->Load("asset/Model/me.fbx");
+	animModel->Load("asset/Model/monkeyKing.fbx");
 }
 
 void Player::Uninit()
@@ -48,10 +48,10 @@ void Player::Update()
 		f -= 0.03;
 	}
 
-	m_Rotation.y += 0.062f;
+	//m_Rotation.y += 0.062f;
 
-	m_Position.x += -cosf(m_Rotation.y) * f;
-	m_Position.z += sinf(m_Rotation.y) * f;
+	//m_Position.x += -cosf(m_Rotation.y) * f;
+	//m_Position.z += sinf(m_Rotation.y) * f;
 	m_Position.y = CManager::GetScene()->GetGameObject<CField>(0)->GetHeight(m_Position) + 1.75f;
 
 	if (CInput::GetKeyPress(VK_SPACE))
@@ -60,6 +60,7 @@ void Player::Update()
 		Bullet* bullet = scene->AddGameObject<Bullet>(0);
 		bullet->SetPosition(m_Position);
 	}
+	animModel->Update(modelFrame++);
 
 }
 

@@ -4,6 +4,7 @@
 
 
 
+
 void CModelAnimation::Draw()
 {
 	//CRenderer::SetVertexBuffers(m_VertexBuffer);
@@ -18,9 +19,17 @@ void CModelAnimation::Draw(XMMATRIX& Matrix)
 
 void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
 {
-	aiMatrix4x4 matrix = Node->mTransformation;
-	aiTransposeMatrix4(&matrix);
-	XMMATRIX world = XMLoadFloat4x4((XMFLOAT4X4*)&matrix);
+	//aiMatrix4x4 matrix = Node->mTransformation;
+	//aiTransposeMatrix4(&matrix);
+	//XMMATRIX  mat = XMLoadFloat4x4((XMFLOAT4X4*)&matrix);
+	XMMATRIX world = XMMatrixIdentity();
+	aiQuaternion aiQuat = m_NodeRotation[Node->mName.C_Str()];
+	XMVECTOR quat = XMLoadFloat4(&XMFLOAT4(aiQuat.x, aiQuat.y, aiQuat.z, aiQuat.w));
+	world = XMMatrixRotationQuaternion(quat);
+	aiVector3D aiVec = m_NodePosition[Node->mName.C_Str()];
+	XMMATRIX trans = XMMatrixTranslation(aiVec.x, aiVec.y, aiVec.z);
+	//world =  mat * world;
+	world *= trans;
 	world *= Matrix;
 
 	CRenderer::SetWorldMatrix(&world);
@@ -112,4 +121,31 @@ void CModelAnimation::Unload()
 	}
 	delete[] m_Mesh;
 	aiReleaseImport(m_Scene);
+}
+
+//void CModelAnimation::Update(int Animation1, int Animation2, float Blend, int Frame);
+/*{
+	aiAnimation* animation1 = m_Scene[1]->mAnimations[0];
+	aiAnimation* animation2 = m_Scene[2]->mAnimations[0];
+	for (int c = 0; c < animation->mNumChannels; c++)
+	{
+		aiNodeAnim* nodeAnim1 = animation1->mChannels[c];
+		aiNodeAnim* nodeAnim2 = animation2->mChannels[c];
+		int f = Frame % nodeAnim->mNumRotationKeys;
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = ‹…–ÊüŒ`•âŠÔ aiQuaternion::Interpolate
+		f = Frame % nodeAnim->mNumPositionKeys;
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = üŒ`•âŠÔ
+	}
+}*/
+void CModelAnimation::Update(int Frame)
+{
+	aiAnimation* animation = m_Scene->mAnimations[0];
+	for (int c = 0; c < animation->mNumChannels; c++)
+	{
+		aiNodeAnim* nodeAnim = animation->mChannels[c];
+		int f = Frame % nodeAnim->mNumRotationKeys;
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = nodeAnim->mRotationKeys[f].mValue;
+		f = Frame % nodeAnim->mNumPositionKeys;
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = nodeAnim->mPositionKeys[f].mValue;
+	}
 }

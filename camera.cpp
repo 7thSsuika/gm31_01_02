@@ -32,6 +32,11 @@ void CCamera::Uninit()
 
 void CCamera::Update()
 {
+	if (Mouse::Get().GetState().leftButton && (Mouse::Get().mouseTracker.leftButton == Mouse::Get().mouseTracker.HELD))
+	{
+		m_Rotation.x += (Mouse::Get().GetState().y - Mouse::Get().mouseTracker.GetLastState().y) * 0.01f;
+		m_Rotation.y += (Mouse::Get().GetState().x - Mouse::Get().mouseTracker.GetLastState().x) * 0.01f;
+	}
 	int input = CInput::GetKeyPress(VK_NUMPAD8) - CInput::GetKeyPress(VK_NUMPAD2);
 	if (input)
 	{
@@ -41,19 +46,28 @@ void CCamera::Update()
 	input = CInput::GetKeyPress(VK_NUMPAD6) - CInput::GetKeyPress(VK_NUMPAD4);
 	if (input)
 	{
-		m_Rotation.y += input * 0.03;
+		m_Rotation.y += input * 0.03f;
 	}
 
 	input = CInput::GetKeyPress(VK_UP) - CInput::GetKeyPress(VK_DOWN);
 	if (input)
 	{
-		m_Position.z += input * 0.13;
+		XMFLOAT4X4 mat;
+		XMStoreFloat4x4(&mat, m_InvViewMatrix);
+		m_Position.x += mat._31 * input * 0.1f;
+		m_Position.y += mat._32 * input * 0.1f;
+		m_Position.z += mat._33 * input * 0.1f;
+
 	}
 
 	input = CInput::GetKeyPress(VK_RIGHT) - CInput::GetKeyPress(VK_LEFT);
 	if (input)
 	{
-		m_Position.x += input * 0.13;
+		XMFLOAT4X4 mat;
+		XMStoreFloat4x4(&mat, m_InvViewMatrix);
+		m_Position.x += mat._11 * input * 0.1f;
+		m_Position.y += mat._12 * input * 0.1f;
+		m_Position.z += mat._13 * input * 0.1f;
 	}
 
 	input = CInput::GetKeyPress(VK_NUMPAD7) - CInput::GetKeyPress(VK_NUMPAD9);
@@ -68,7 +82,6 @@ void CCamera::Update()
 void CCamera::Draw()
 {
 
-	XMMATRIX	m_InvViewMatrix;
 	XMMATRIX	m_ProjectionMatrix;
 
 
