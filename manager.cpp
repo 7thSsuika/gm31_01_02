@@ -43,7 +43,6 @@ void CManager::Uninit()
 
 void CManager::Update()
 {
-
 	scene->Update();
 	CInput::Update();
 }

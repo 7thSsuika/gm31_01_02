@@ -34,8 +34,8 @@ void CCamera::Update()
 {
 	if (Mouse::Get().GetState().leftButton && (Mouse::Get().mouseTracker.leftButton == Mouse::Get().mouseTracker.HELD))
 	{
-		m_Rotation.x += (Mouse::Get().GetState().y - Mouse::Get().mouseTracker.GetLastState().y) * 0.01f;
 		m_Rotation.y += (Mouse::Get().GetState().x - Mouse::Get().mouseTracker.GetLastState().x) * 0.01f;
+		m_Rotation.x += (Mouse::Get().GetState().y - Mouse::Get().mouseTracker.GetLastState().y) * 0.01f;
 	}
 	int input = CInput::GetKeyPress(VK_NUMPAD8) - CInput::GetKeyPress(VK_NUMPAD2);
 	if (input)

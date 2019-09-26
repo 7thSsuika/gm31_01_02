@@ -24,7 +24,8 @@ void Player::Init()
 	model->Load("asset/miku_01.obj");
 
 	animModel = new CModelAnimation();
-	animModel->Load("asset/Model/monkeyKing.fbx");
+	animModel->Load("asset/Model/monkeyStand.fbx");
+	animModel->LoadAnim("asset/Model/monkeyKing_walk.fbx");
 }
 
 void Player::Uninit()
@@ -47,7 +48,14 @@ void Player::Update()
 	{
 		f -= 0.03;
 	}
-
+	if (CInput::GetKeyTrigger('B'))
+	{
+		animModel->SetAnim(1);
+	}
+	if (CInput::GetKeyTrigger('C'))
+	{
+		animModel->SetAnim(0);
+	}
 	//m_Rotation.y += 0.062f;
 
 	//m_Position.x += -cosf(m_Rotation.y) * f;
