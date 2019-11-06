@@ -16,6 +16,7 @@
 #include "player.h"
 #include "polygon.h"
 #include "enemy.h"
+#include "Ball.h"
 
 void Game::Init()
 {
@@ -26,6 +27,7 @@ void Game::Init()
 	AddGameObject<Enemy>(0);
 	AddGameObject<Enemy>(0);
 	AddGameObject<Enemy>(0);
+	AddGameObject<Ball>(0);
 	AddGameObject<Player>(0);
 	AddGameObject<CPolygon>(4);
 

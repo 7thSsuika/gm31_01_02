@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="audio_clip.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="enemy.h" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio_clip.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="enemy.cpp" />
