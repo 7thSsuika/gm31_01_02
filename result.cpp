@@ -4,7 +4,6 @@
 #include "main.h"
 #include "renderer.h"
 #include "audio_clip.h"
-#include "scene.h"
 #include "title.h"
 #include "input.h"
 #include "manager.h"

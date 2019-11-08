@@ -11,7 +11,6 @@
 #include "player.h"
 #include "polygon.h"
 #include "enemy.h"
-#include "scene.h"
 #include "title.h"
 #include "game.h"
 #include "result.h"

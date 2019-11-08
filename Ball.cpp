@@ -3,6 +3,8 @@
 #include "model.h"
 #include "texture.h"
 #include "input.h"
+#include "camera.h"
+#include "manager.h"
 #include "Ball.h"
 
 void Ball::Init()
@@ -51,6 +53,10 @@ void Ball::Update()
 
 void Ball::Draw()
 {
+	CCamera* camera;
+	camera = CManager::GetScene()->GetGameObject<CCamera>(0);
+	if (camera->GetVisibility(m_Position) == false)
+		return;
 	XMMATRIX world;
 	world = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	world *= XMMatrixRotationQuaternion(m_Quaternion);

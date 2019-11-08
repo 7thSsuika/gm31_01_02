@@ -4,7 +4,6 @@
 #include "main.h"
 #include "renderer.h"
 #include "audio_clip.h"
-#include "scene.h"
 #include "game.h"
 #include "result.h"
 #include "title.h"
