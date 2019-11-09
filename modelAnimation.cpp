@@ -65,7 +65,7 @@ void CModelAnimation::Load(const char * FileName)
 			
 			//vertex[i].TexCoord = XMFLOAT2(mesh->mTextureCoords[i]->x, mesh->mTextureCoords[i]->z);
 		}
-		// ’¸“_ƒoƒbƒtƒ@¶¬
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		{
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
@@ -92,7 +92,7 @@ void CModelAnimation::Load(const char * FileName)
 		}
 		m_Mesh[m].IndexNum = mesh->mNumFaces * 3;
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		{
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
@@ -145,9 +145,9 @@ void CModelAnimation::Unload()
 		aiNodeAnim* nodeAnim1 = animation1->mChannels[c];
 		aiNodeAnim* nodeAnim2 = animation2->mChannels[c];
 		int f = Frame % nodeAnim->mNumRotationKeys;
-		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = ‹…–ÊüŒ`•âŠÔ aiQuaternion::Interpolate
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = çƒé¢ç·šå½¢è£œé–“ aiQuaternion::Interpolate
 		f = Frame % nodeAnim->mNumPositionKeys;
-		m_NodePosition[nodeAnim->mNodeName.C_Str()] = üŒ`•âŠÔ
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = ç·šå½¢è£œé–“
 	}
 }*/
 void CModelAnimation::Update(int Frame)

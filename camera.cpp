@@ -21,7 +21,7 @@ void CCamera::Init()
 	m_Viewport.bottom = SCREEN_HEIGHT;
 
 
-	// ƒrƒ…[ƒ|[ƒgİ’è
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¨­å®š
 	D3D11_VIEWPORT dxViewport;
 	dxViewport.Width = (float)(m_Viewport.right - m_Viewport.left);
 	dxViewport.Height = (float)(m_Viewport.bottom - m_Viewport.top);
@@ -32,10 +32,10 @@ void CCamera::Init()
 
 	CRenderer::GetDeviceContext()->RSSetViewports(1, &dxViewport);
 
-	// ƒvƒƒWƒFƒNƒVƒ‡ƒ“ƒ}ƒgƒŠƒNƒXİ’è
+	// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	m_ProjectionMatrix = XMMatrixPerspectiveFovLH(1.0f, dxViewport.Width / dxViewport.Height, 1.0f, 1000.0f);
 
-	// ƒrƒ…[ƒ}ƒgƒŠƒNƒXİ’è
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	m_InvViewMatrix = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	m_InvViewMatrix *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 
@@ -107,7 +107,7 @@ void CCamera::Update()
 
 	if (viewChanged)
 	{
-		// ƒrƒ…[ƒ}ƒgƒŠƒNƒXİ’è
+		// ãƒ“ãƒ¥ãƒ¼ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 		m_InvViewMatrix = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 		m_InvViewMatrix *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 

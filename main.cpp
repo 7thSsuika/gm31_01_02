@@ -37,10 +37,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL
 	};
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 	RegisterClassEx(&wcex);
 
-	// ƒEƒBƒ“ƒhƒE‚Ìì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	g_Window = CreateWindowEx(0,
 		CLASS_NAME,
 		WINDOW_NAME,
@@ -55,17 +55,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL);
 
 
-	// ‰Šú‰»ˆ—(ƒEƒBƒ“ƒhƒE‚ğì¬‚µ‚Ä‚©‚çs‚¤)
+	// åˆæœŸåŒ–å‡¦ç†(ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã—ã¦ã‹ã‚‰è¡Œã†)
 	CManager::Init();
 
 
-	// ƒEƒCƒ“ƒhƒE‚Ì•\¦(‰Šú‰»ˆ—‚ÌŒã‚És‚¤)
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º(åˆæœŸåŒ–å‡¦ç†ã®å¾Œã«è¡Œã†)
 	ShowWindow(g_Window, nCmdShow);
 	UpdateWindow(g_Window);
 
 
 
-	//ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg‰Šú‰»
+	//ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸåŒ–
 	DWORD dwExecLastTime;
 	DWORD dwCurrentTime;
 	timeBeginPeriod(1);
@@ -73,19 +73,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	dwCurrentTime = 0;
 
 
-	// ƒƒbƒZ[ƒWƒ‹[ƒv
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—
 	MSG msg;
 	while(1)
 	{
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if(msg.message == WM_QUIT)
-			{// PostQuitMessage()‚ªŒÄ‚Î‚ê‚½‚çƒ‹[ƒvI—¹
+			{// PostQuitMessage()ãŒå‘¼ã°ã‚ŒãŸã‚‰ãƒ«ãƒ¼ãƒ—çµ‚äº†
 				break;
 			}
 			else
 			{
-				// ƒƒbƒZ[ƒW‚Ì–|–ó‚ÆƒfƒBƒXƒpƒbƒ`
+				// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ç¿»è¨³ã¨ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒ
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
@@ -98,20 +98,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				dwExecLastTime = dwCurrentTime;
 
-				// XVˆ—
+				// æ›´æ–°å‡¦ç†
 				CManager::Update();
-				// •`‰æˆ—
+				// æç”»å‡¦ç†
 				CManager::Draw();
 			}
 		}
 	}
 
-	timeEndPeriod(1);				// •ª‰ğ”\‚ğ–ß‚·
+	timeEndPeriod(1);				// åˆ†è§£èƒ½ã‚’æˆ»ã™
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‰ğœ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è§£é™¤
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	CManager::Uninit();
 
 	return (int)msg.wParam;
@@ -119,7 +119,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 
 //=============================================================================
-// ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

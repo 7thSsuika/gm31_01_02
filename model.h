@@ -2,7 +2,7 @@
 
 
 
-// ƒ}ƒeƒŠƒAƒ‹\‘¢‘Ì
+// ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ä½“
 struct MODEL_MATERIAL
 {
 	char						Name[256];
@@ -10,7 +10,7 @@ struct MODEL_MATERIAL
 	char						TextureName[256];
 };
 
-// •`‰æƒTƒuƒZƒbƒg\‘¢‘Ì
+// æç”»ã‚µãƒ–ã‚»ãƒƒãƒˆæ§‹é€ ä½“
 struct SUBSET
 {
 	unsigned short	StartIndex;
@@ -18,7 +18,7 @@ struct SUBSET
 	MODEL_MATERIAL	Material;
 };
 
-// ƒ‚ƒfƒ‹\‘¢‘Ì
+// ãƒ¢ãƒ‡ãƒ«æ§‹é€ ä½“
 struct MODEL
 {
 	VERTEX_3D		*VertexArray;
