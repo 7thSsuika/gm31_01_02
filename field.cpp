@@ -161,30 +161,30 @@ void CField::Draw()
 {
 	
 
-	// í∏ì_ÉoÉbÉtÉ@ê›íË
+	// È†ÇÁÇπ„Éê„ÉÉ„Éï„Ç°Ë®≠ÂÆö
 	UINT stride = sizeof( VERTEX_3D );
 	UINT offset = 0;
 	CRenderer::GetDeviceContext()->IASetVertexBuffers( 0, 1, &m_VertexBuffer, &stride, &offset );
 
-	// ÉCÉìÉfÉbÉNÉXÉoÉbÉtÉ@ê›íË
+	// „Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Éê„ÉÉ„Éï„Ç°Ë®≠ÂÆö
 	CRenderer::GetDeviceContext()->IASetIndexBuffer( m_IndexBuffer, DXGI_FORMAT_R16_UINT, 0 );
 
 
-	// ÉeÉNÉXÉ`ÉÉê›íË
+	// „ÉÜ„ÇØ„Çπ„ÉÅ„É£Ë®≠ÂÆö
 	CRenderer::SetTexture( m_Texture );
 
-	// É}ÉgÉäÉNÉXê›íË
+	// „Éû„Éà„É™„ÇØ„ÇπË®≠ÂÆö
 	XMMATRIX world;
 	world = XMMatrixScaling( m_Scale.x, m_Scale.y, m_Scale.z );
 	world *= XMMatrixRotationRollPitchYaw( m_Rotation.x, m_Rotation.y, m_Rotation.z );
 	world *= XMMatrixTranslation( m_Position.x, m_Position.y, m_Position.z );
 	CRenderer::SetWorldMatrix( &world );
 
-	// ÉvÉäÉ~ÉeÉBÉuÉgÉ|ÉçÉWê›íË
+	// „Éó„É™„Éü„ÉÜ„Ç£„Éñ„Éà„Éù„É≠„Ç∏Ë®≠ÂÆö
 	CRenderer::GetDeviceContext()->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
 
 
-	// É|ÉäÉSÉìï`âÊ
+	// „Éù„É™„Ç¥„É≥ÊèèÁîª
 	CRenderer::GetDeviceContext()->DrawIndexed(((FIELD_X * 2 + 2) * (FIELD_Z - 1) - 2), 0, 0 );
 
 }
@@ -197,11 +197,11 @@ float CField::GetHeight(XMFLOAT3 position)
 	XMVECTOR v01, v02, n;
 	float dp0n, dvn, dpn, t;
 	v = XMFLOAT3(0.0f, -10.0f, 0.0f);
-	// Ç»ÇÒÉuÉçÉbÉNÇ…Ç¢ÇÈÇÃÇ©
-	x = (position.x + FIELD_X / 2 * fieldSize) / fieldSize; // 0.1ÇÕÉuÉçÉbÉNÇÃÉTÉCÉY
+	// „Å™„Çì„Éñ„É≠„ÉÉ„ÇØ„Å´„ÅÑ„Çã„ÅÆ„Åã
+	x = (position.x + FIELD_X / 2 * fieldSize) / fieldSize; // 0.1„ÅØ„Éñ„É≠„ÉÉ„ÇØ„ÅÆ„Çµ„Ç§„Ç∫
 	z = (-position.z + FIELD_Z / 2 * fieldSize) / fieldSize;
 
-	va.x = m_Vertex[(z + 1) * FIELD_X/*â°í∏ì_êî*/ + (x + 1)].Position.x - m_Vertex[z * FIELD_X + x].Position.x;
+	va.x = m_Vertex[(z + 1) * FIELD_X/*Ê®™È†ÇÁÇπÊï∞*/ + (x + 1)].Position.x - m_Vertex[z * FIELD_X + x].Position.x;
 	va.y = m_Vertex[(z + 1) * FIELD_X + (x + 1)].Position.y - m_Vertex[z * FIELD_X + x].Position.y;
 	va.z = m_Vertex[(z + 1) * FIELD_X + (x + 1)].Position.z - m_Vertex[z * FIELD_X + x].Position.z;
 
@@ -209,7 +209,7 @@ float CField::GetHeight(XMFLOAT3 position)
 	vb.y = position.y - m_Vertex[z * FIELD_X + x].Position.y;
 	vb.z = position.z - m_Vertex[z * FIELD_X + x].Position.z;
 
-	if (va.z * vb.x - va.x * vb.z/*yê¨ï™ÇæÇØÇåvéZ*/ > 0.0f)
+	if (va.z * vb.x - va.x * vb.z/*yÊàêÂàÜ„Å†„Åë„ÇíË®àÁÆó*/ > 0.0f)
 	{
 		p0 = m_Vertex[(z + 1) * FIELD_X + x].Position;
 		p1 = m_Vertex[(z * FIELD_X + x)].Position;
@@ -227,12 +227,12 @@ float CField::GetHeight(XMFLOAT3 position)
 	vp2 = XMLoadFloat3(&p2);
 	v01 = vp1 - vp0;
 	v02 = vp2 - vp0;
-	n = XMVector3Cross(v01, v02);//v01 äOêœ v02;
+	n = XMVector3Cross(v01, v02);//v01 Â§ñÁ©ç v02;
 	XMFLOAT3 fn;
 	XMStoreFloat3(&fn, n);
-	dvn = v.x * fn.x + v.y * fn.y + v.z * fn.z; //v ì‡êœ n;
-	dp0n = p0.x * fn.x + p0.y * fn.y + p0.z * fn.z; //p0 ì‡êœ n;
-	dpn = position.x * fn.x + position.y * fn.y + position.z * fn.z; //position ì‡êœ n;
+	dvn = v.x * fn.x + v.y * fn.y + v.z * fn.z; //v ÂÜÖÁ©ç n;
+	dp0n = p0.x * fn.x + p0.y * fn.y + p0.z * fn.z; //p0 ÂÜÖÁ©ç n;
+	dpn = position.x * fn.x + position.y * fn.y + position.z * fn.z; //position ÂÜÖÁ©ç n;
 	t = (dp0n - dpn) / dvn;
 	hp.x = position.x + v.x * t;
 	hp.y = position.y + v.y * t;

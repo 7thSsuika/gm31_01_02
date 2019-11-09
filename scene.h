@@ -73,7 +73,7 @@ public:
 			{
 				object->Update();
 			}
-			gameObjects[i].remove_if([](GameObject* object){return object->Destroy();}); // [] = –¼‘O‚Ì‚È‚¢ŠÖ”‚ğì‚é
+			gameObjects[i].remove_if([](GameObject* object){return object->Destroy();}); // [] = åå‰ã®ãªã„é–¢æ•°ã‚’ä½œã‚‹
 		}
 	}
 	virtual void Draw()

@@ -7,6 +7,7 @@ static Mouse mouse;
 static Keyboard kbd;
 void CInput::Init()
 {
+
 	mouse.SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 
 	mouse.SetWindow(GetWindow());

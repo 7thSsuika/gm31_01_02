@@ -4,7 +4,6 @@
 #include "main.h"
 #include "renderer.h"
 #include "audio_clip.h"
-#include "scene.h"
 #include "game.h"
 #include "result.h"
 #include "title.h"
@@ -16,6 +15,7 @@
 #include "player.h"
 #include "polygon.h"
 #include "enemy.h"
+#include "Ball.h"
 
 void Game::Init()
 {
@@ -26,6 +26,7 @@ void Game::Init()
 	AddGameObject<Enemy>(0);
 	AddGameObject<Enemy>(0);
 	AddGameObject<Enemy>(0);
+	AddGameObject<Ball>(0);
 	AddGameObject<Player>(0);
 	AddGameObject<CPolygon>(4);
 

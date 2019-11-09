@@ -4,7 +4,7 @@
 
 
 
-// ’¸“_\‘¢‘Ì
+// é ‚ç‚¹æ§‹é€ ä½“
 struct VERTEX_3D
 {
     XMFLOAT3 Position;
@@ -14,7 +14,7 @@ struct VERTEX_3D
 };
 
 
-// F\‘¢‘Ì
+// è‰²æ§‹é€ ä½“
 struct COLOR
 {
 	COLOR(){}
@@ -32,7 +32,7 @@ struct COLOR
 	float a;
 };
 
-// ƒ}ƒeƒŠƒAƒ‹\‘¢‘Ì
+// ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ä½“
 struct MATERIAL
 {
 	COLOR		Ambient;
@@ -40,13 +40,13 @@ struct MATERIAL
 	COLOR		Specular;
 	COLOR		Emission;
 	float		Shininess;
-	float		Dummy[3];//16bit‹«ŠE—p
+	float		Dummy[3];//16bitå¢ƒç•Œç”¨
 };
 
 
 
 
-// ƒ}ƒeƒŠƒAƒ‹\‘¢‘Ì
+// ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ä½“
 struct DX11_MODEL_MATERIAL
 {
 	MATERIAL		Material;
@@ -54,7 +54,7 @@ struct DX11_MODEL_MATERIAL
 };
 
 
-// •`‰æƒTƒuƒZƒbƒg\‘¢‘Ì
+// æç”»ã‚µãƒ–ã‚»ãƒƒãƒˆæ§‹é€ ä½“
 struct DX11_SUBSET
 {
 	unsigned short	StartIndex;

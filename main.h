@@ -26,8 +26,8 @@ using namespace DirectX;
 #pragma comment (lib, "xaudio2.lib")
 
 
-#define SCREEN_WIDTH	(960)			// ウインドウの幅
-#define SCREEN_HEIGHT	(540)			// ウインドウの高さ
+#define SCREEN_WIDTH	(960)			// 繧ｦ繧､繝ｳ繝峨え縺ｮ蟷�
+#define SCREEN_HEIGHT	(540)			// 繧ｦ繧､繝ｳ繝峨え縺ｮ鬮倥＆
 
 
 HWND GetWindow();
