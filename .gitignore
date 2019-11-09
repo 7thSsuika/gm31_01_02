@@ -52,6 +52,7 @@ artifacts/
 *.meta
 *.obj
 !asset/*.obj
+!lib/*
 *.pch
 *.pdb
 *.pgc
