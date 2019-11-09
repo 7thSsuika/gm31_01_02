@@ -201,7 +201,7 @@ float CField::GetHeight(XMFLOAT3 position)
 	x = (position.x + FIELD_X / 2 * fieldSize) / fieldSize; // 0.1はブロックのサイズ
 	z = (-position.z + FIELD_Z / 2 * fieldSize) / fieldSize;
 
-	va.x = m_Vertex[(z + 1) * FIELD_X/*横頂点数*/ + (x + 1)].Position.x - m_Vertex[z * FIELD_X + x].Position.x;
+	va.x = m_Vertex[(z + 1) * FIELD_X/* 横頂点数 */ + (x + 1)].Position.x - m_Vertex[z * FIELD_X + x].Position.x;
 	va.y = m_Vertex[(z + 1) * FIELD_X + (x + 1)].Position.y - m_Vertex[z * FIELD_X + x].Position.y;
 	va.z = m_Vertex[(z + 1) * FIELD_X + (x + 1)].Position.z - m_Vertex[z * FIELD_X + x].Position.z;
 
@@ -209,7 +209,7 @@ float CField::GetHeight(XMFLOAT3 position)
 	vb.y = position.y - m_Vertex[z * FIELD_X + x].Position.y;
 	vb.z = position.z - m_Vertex[z * FIELD_X + x].Position.z;
 
-	if (va.z * vb.x - va.x * vb.z/*y成分だけを計算*/ > 0.0f)
+	if (va.z * vb.x - va.x * vb.z/* y成分だけを計算 */ > 0.0f)
 	{
 		p0 = m_Vertex[(z + 1) * FIELD_X + x].Position;
 		p1 = m_Vertex[(z * FIELD_X + x)].Position;
@@ -240,4 +240,3 @@ float CField::GetHeight(XMFLOAT3 position)
 	return hp.y;
 
 }
-
