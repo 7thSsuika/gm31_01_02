@@ -5,13 +5,39 @@ class CCamera : public GameObject
 {
 private:
 
-	class ViewFrustrum
+	class ViewFrustum
 	{
 	public:
-		ViewFrustrum();
+		enum ContainState
+		{
+			FRUSTUM_OUT,
+			FRUSTUM_IN,
+			FRUSTUM_INTERSECT
+		};
+	public:
+		ViewFrustum();
 		void ExtractPlanes(const XMMATRIX& comboMatrix, bool normalize);
+		int SphereIntersection(const XMFLOAT3& centerPos, const float radius);
 	private:
-		XMFLOAT4 planes[6];
+		enum frustumFace
+		{
+			FRUSTUM_LEFT,
+			FRUSTUM_RIGHT,
+			FRUSTUM_TOP,
+			FRUSTUM_DOWN,
+			FRUSTUM_NEAR,
+			FRUSTUM_FAR,
+		};
+
+		typedef struct plane_tag
+		{
+			XMFLOAT3 normal;
+			float distance;
+			void Normalize();
+			float DistanceToPoint(const XMFLOAT3& point);
+		}PLANE;
+
+		PLANE planes[6];
 	};
 
 	// XMFLOAT3					m_Position;
@@ -20,14 +46,17 @@ private:
 	XMMATRIX	m_InvViewMatrix;
 	XMMATRIX	m_ProjectionMatrix;
 
-	bool viewChanged;
+	bool inputValid;
 	RECT m_Viewport;
-	ViewFrustrum viewFrustrum;
+	ViewFrustum viewFrustrum;
 
 public:
 	void Init();
 	void Uninit();
 	void Update();
+
+	bool CheckInput();
+
 	void Draw();
 
 	bool GetVisibility(XMFLOAT3 Position);

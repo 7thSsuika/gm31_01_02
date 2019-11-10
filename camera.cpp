@@ -42,7 +42,7 @@ void CCamera::Init()
 	XMVECTOR det;
 	m_ViewMatrix = XMMatrixInverse(&det, m_InvViewMatrix);
 
-	viewFrustrum.ExtractPlanes(m_ViewMatrix * m_ProjectionMatrix, false);
+	viewFrustrum.ExtractPlanes(m_ViewMatrix * m_ProjectionMatrix, true);
 
 }
 
@@ -56,7 +56,26 @@ void CCamera::Uninit()
 
 void CCamera::Update()
 {
-	viewChanged = false;
+	inputValid = CheckInput();
+
+	if (inputValid)
+	{
+		// ビューマトリクス設定
+		m_InvViewMatrix = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+		m_InvViewMatrix *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+
+		XMVECTOR det;
+		m_ViewMatrix = XMMatrixInverse(&det, m_InvViewMatrix);
+
+		viewFrustrum.ExtractPlanes(m_ViewMatrix * m_ProjectionMatrix, true);
+	}
+}
+
+
+
+bool CCamera::CheckInput()
+{
+	bool viewChanged = false;
 	int input;
 	viewChanged |= input = Mouse::Get().GetState().leftButton && (Mouse::Get().mouseTracker.leftButton == Mouse::Get().mouseTracker.HELD);
 	if (input)
@@ -104,21 +123,8 @@ void CCamera::Update()
 	{
 		m_Position.y += input * 0.13;
 	}
-
-	if (viewChanged)
-	{
-		// ビューマトリクス設定
-		m_InvViewMatrix = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-		m_InvViewMatrix *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-
-		XMVECTOR det;
-		m_ViewMatrix = XMMatrixInverse(&det, m_InvViewMatrix);
-
-		viewFrustrum.ExtractPlanes(m_ViewMatrix * m_ProjectionMatrix, false);
-	}
+	return viewChanged;
 }
-
-
 
 void CCamera::Draw()
 {
@@ -128,6 +134,9 @@ void CCamera::Draw()
 
 bool CCamera::GetVisibility(XMFLOAT3 Position)
 {
+	return viewFrustrum.SphereIntersection(Position, 0.01f);
+
+	/*      old style(check point in perspective space)
 	XMVECTOR worldPos, viewPos, projPos;
 	XMFLOAT3 projPosF;
 
@@ -144,55 +153,89 @@ bool CCamera::GetVisibility(XMFLOAT3 Position)
 	}
 
 	return false;
+	*/
 }
 
-CCamera::ViewFrustrum::ViewFrustrum()
+CCamera::ViewFrustum::ViewFrustum()
 {
 	ZeroMemory(planes, sizeof(planes));
 }
 
-void CCamera::ViewFrustrum::ExtractPlanes(const XMMATRIX & comboMatrix, bool normalize)
+void CCamera::ViewFrustum::ExtractPlanes(const XMMATRIX & comboMatrix, bool normalize)
 {
 	XMFLOAT4X4 mat;
 	XMStoreFloat4x4(&mat, comboMatrix);
 	// Left clipping plane
-	planes[0].x = mat._14 + mat._11;
-	planes[0].y = mat._24 + mat._21;
-	planes[0].z = mat._34 + mat._31;
-	planes[0].w = mat._44 + mat._41;
+	planes[FRUSTUM_LEFT].normal.x = mat._14 + mat._11;
+	planes[FRUSTUM_LEFT].normal.y = mat._24 + mat._21;
+	planes[FRUSTUM_LEFT].normal.z = mat._34 + mat._31;
+	planes[FRUSTUM_LEFT].distance = mat._44 + mat._41;
 	// Right clipping plane
-	planes[1].x = mat._14 - mat._11;
-	planes[1].y = mat._24 - mat._21;
-	planes[1].z = mat._34 - mat._31;
-	planes[1].w = mat._44 - mat._41;
+	planes[FRUSTUM_RIGHT].normal.x = mat._14 - mat._11;
+	planes[FRUSTUM_RIGHT].normal.y = mat._24 - mat._21;
+	planes[FRUSTUM_RIGHT].normal.z = mat._34 - mat._31;
+	planes[FRUSTUM_RIGHT].distance = mat._44 - mat._41;
 	// Top clipping plane
-	planes[2].x = mat._14 - mat._12;
-	planes[2].y = mat._24 - mat._22;
-	planes[2].z = mat._34 - mat._32;
-	planes[2].w = mat._44 - mat._42;
+	planes[FRUSTUM_TOP].normal.x = mat._14 - mat._12;
+	planes[FRUSTUM_TOP].normal.y = mat._24 - mat._22;
+	planes[FRUSTUM_TOP].normal.z = mat._34 - mat._32;
+	planes[FRUSTUM_TOP].distance = mat._44 - mat._42;
 	// Bottom clipping plane  
-	planes[3].x = mat._14 + mat._12;
-	planes[3].y = mat._24 + mat._22;
-	planes[3].z = mat._34 + mat._32;
-	planes[3].w = mat._44 + mat._42;
+	planes[FRUSTUM_DOWN].normal.x = mat._14 + mat._12;
+	planes[FRUSTUM_DOWN].normal.y = mat._24 + mat._22;
+	planes[FRUSTUM_DOWN].normal.z = mat._34 + mat._32;
+	planes[FRUSTUM_DOWN].distance = mat._44 + mat._42;
 	// Near clipping plane  
-	planes[4].x = mat._13;
-	planes[4].y = mat._23;
-	planes[4].z = mat._33;
-	planes[4].w = mat._43;
+	planes[FRUSTUM_NEAR].normal.x = mat._13;
+	planes[FRUSTUM_NEAR].normal.y = mat._23;
+	planes[FRUSTUM_NEAR].normal.z = mat._33;
+	planes[FRUSTUM_NEAR].distance = mat._43;
 	// Far clipping plane 
-	planes[5].x = mat._14 - mat._13;
-	planes[5].y = mat._24 - mat._23;
-	planes[5].z = mat._34 - mat._33;
-	planes[5].w = mat._44 - mat._43;
+	planes[FRUSTUM_FAR].normal.x = mat._14 - mat._13;
+	planes[FRUSTUM_FAR].normal.y = mat._24 - mat._23;
+	planes[FRUSTUM_FAR].normal.z = mat._34 - mat._33;
+	planes[FRUSTUM_FAR].distance = mat._44 - mat._43;
 	// Normalize the plane equations, if requested  
 	if (normalize == true)
 	{
-		XMVECTOR vec;
-		for (int i = 0; i < sizeof(planes) / sizeof(planes[0]); i++)
+		for (int i = 0; i < 6; i++)
 		{
-			vec = XMLoadFloat4(&planes[i]);
-			XMVector4Normalize(vec);
+			planes[i].Normalize();
 		}
 	}
+}
+
+int CCamera::ViewFrustum::SphereIntersection(const XMFLOAT3& centerPos, const float radius)
+{
+	float dis;
+
+	for (int i = 0; i < 6; i++)
+	{
+		dis = planes[i].DistanceToPoint(centerPos);
+
+		if (dis < -radius)  // 外离
+			return FRUSTUM_OUT;
+		if (fabs(dis) < radius) // 相交
+			return FRUSTUM_INTERSECT;
+	}
+	return FRUSTUM_IN;  // 内含
+}
+
+void CCamera::ViewFrustum::plane_tag::Normalize()
+{
+	XMVECTOR nor;
+	nor = XMLoadFloat3(&normal);
+	XMFLOAT3 length;
+	XMStoreFloat3(&length, XMVector3Length(nor));
+	float scale = 1 / length.x;
+
+	normal.x *= scale;
+	normal.y *= scale;
+	normal.z *= scale;
+	distance *= scale;
+}
+
+float CCamera::ViewFrustum::plane_tag::DistanceToPoint(const XMFLOAT3 & point)
+{
+	return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
