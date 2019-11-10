@@ -134,7 +134,9 @@ void CCamera::Draw()
 
 bool CCamera::GetVisibility(XMFLOAT3 Position)
 {
-	return viewFrustrum.SphereIntersection(Position, 0.01f);
+	AaBox box = AaBox(Position, XMFLOAT3(0.01f, 0.01f, 0.01f));
+	return viewFrustrum.AaBoxIntersection(box);
+	//return viewFrustrum.SphereIntersection(Position, 0.01f);
 
 	/*      old style(check point in perspective space)
 	XMVECTOR worldPos, viewPos, projPos;
@@ -154,6 +156,11 @@ bool CCamera::GetVisibility(XMFLOAT3 Position)
 
 	return false;
 	*/
+}
+
+bool CCamera::GetVisibilityAabox(AaBox& aabox) const
+{
+	return viewFrustrum.AaBoxIntersection(aabox);
 }
 
 CCamera::ViewFrustum::ViewFrustum()
@@ -205,7 +212,7 @@ void CCamera::ViewFrustum::ExtractPlanes(const XMMATRIX & comboMatrix, bool norm
 	}
 }
 
-int CCamera::ViewFrustum::SphereIntersection(const XMFLOAT3& centerPos, const float radius)
+int CCamera::ViewFrustum::SphereIntersection(const XMFLOAT3& centerPos, const float radius) const
 {
 	float dis;
 
@@ -219,6 +226,33 @@ int CCamera::ViewFrustum::SphereIntersection(const XMFLOAT3& centerPos, const fl
 			return FRUSTUM_INTERSECT;
 	}
 	return FRUSTUM_IN;  // 内含
+}
+
+int CCamera::ViewFrustum::AaBoxIntersection(const AaBox & refBox) const
+{
+	XMFLOAT3 corner[8];
+	refBox.GetVertices(corner);
+	int totalIn = 0;
+
+	for (int p = 0; p < 6; p++)
+	{
+		int inCount = 8;
+		int ptIn = 0;
+		for (int i = 0; i < 8; i++)
+		{
+			if (planes[p].DistanceToPoint(corner[i]) <= 0)
+			{
+				ptIn = 0;
+				--inCount;
+			}
+		}
+		if (inCount == 0)
+			return FRUSTUM_OUT;
+		totalIn += ptIn;
+	}
+	if (totalIn == 6)
+		return FRUSTUM_IN;
+	return FRUSTUM_INTERSECT;
 }
 
 void CCamera::ViewFrustum::plane_tag::Normalize()
@@ -235,7 +269,7 @@ void CCamera::ViewFrustum::plane_tag::Normalize()
 	distance *= scale;
 }
 
-float CCamera::ViewFrustum::plane_tag::DistanceToPoint(const XMFLOAT3 & point)
+float CCamera::ViewFrustum::plane_tag::DistanceToPoint(const XMFLOAT3 & point) const
 {
 	return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }

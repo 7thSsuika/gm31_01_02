@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Collision.h"
 
 class CCamera : public GameObject
 {
@@ -17,7 +17,8 @@ private:
 	public:
 		ViewFrustum();
 		void ExtractPlanes(const XMMATRIX& comboMatrix, bool normalize);
-		int SphereIntersection(const XMFLOAT3& centerPos, const float radius);
+		int SphereIntersection(const XMFLOAT3& centerPos, const float radius) const;
+		int AaBoxIntersection(const AaBox& refBox) const;
 	private:
 		enum frustumFace
 		{
@@ -34,7 +35,7 @@ private:
 			XMFLOAT3 normal;
 			float distance;
 			void Normalize();
-			float DistanceToPoint(const XMFLOAT3& point);
+			float DistanceToPoint(const XMFLOAT3& point) const;
 		}PLANE;
 
 		PLANE planes[6];
@@ -60,5 +61,6 @@ public:
 	void Draw();
 
 	bool GetVisibility(XMFLOAT3 Position);
+	bool GetVisibilityAabox(AaBox& aabox) const;
 
 };
