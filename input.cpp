@@ -3,39 +3,34 @@
 #include "input.h"
 
 
-BYTE CInput::m_OldKeyState[256];
-BYTE CInput::m_KeyState[256];
-
-
+static Mouse mouse;
+static Keyboard kbd;
 void CInput::Init()
 {
 
-	memset( m_OldKeyState, 0, 256 );
-	memset( m_KeyState, 0, 256 );
+	mouse.SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 
+	mouse.SetWindow(GetWindow());
 }
 
 void CInput::Uninit()
 {
 
-
 }
 
 void CInput::Update()
 {
-
-	memcpy( m_OldKeyState, m_KeyState, 256 );
-
-	GetKeyboardState( m_KeyState );
-
+	kbd.kbTracker.Update(kbd.GetState());
+	mouse.mouseTracker.Update(mouse.GetState());
 }
 
 bool CInput::GetKeyPress(BYTE KeyCode)
 {
-	return (m_KeyState[KeyCode] & 0x80);
+	return kbd.GetState().IsKeyDown((Keyboard::Keys)KeyCode);
 }
 
 bool CInput::GetKeyTrigger(BYTE KeyCode)
 {
-	return ((m_KeyState[KeyCode] & 0x80) && !(m_OldKeyState[KeyCode] & 0x80));
+	return kbd.kbTracker.IsKeyPressed((Keyboard::Keys)KeyCode);
 }
+

@@ -34,7 +34,7 @@ void CRenderer::Init()
 {
 	HRESULT hr = S_OK;
 
-	// ƒfƒoƒCƒXAƒXƒƒbƒvƒ`ƒF[ƒ“AƒRƒ“ƒeƒLƒXƒg¶¬
+	// ãƒ‡ãƒã‚¤ã‚¹ã€ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã€ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆç”Ÿæˆ
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory( &sd, sizeof( sd ) );
 	sd.BufferCount = 1;
@@ -63,7 +63,7 @@ void CRenderer::Init()
 										&m_ImmediateContext );
 
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[¶¬AÝ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ç”Ÿæˆã€è¨­å®š
 	ID3D11Texture2D* pBackBuffer = NULL;
 	m_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&pBackBuffer );
 	m_D3DDevice->CreateRenderTargetView( pBackBuffer, NULL, &m_RenderTargetView );
@@ -71,7 +71,7 @@ void CRenderer::Init()
 
 
 
-	//ƒXƒeƒ“ƒVƒ‹—pƒeƒNƒXƒ`ƒƒ[ì¬
+	//ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¼ä½œæˆ
 	ID3D11Texture2D* depthTexture = NULL;
 	D3D11_TEXTURE2D_DESC td;
 	ZeroMemory( &td, sizeof(td) );
@@ -87,7 +87,7 @@ void CRenderer::Init()
 	td.MiscFlags		= 0;
 	m_D3DDevice->CreateTexture2D( &td, NULL, &depthTexture );
 
-	//ƒXƒeƒ“ƒVƒ‹ƒ^[ƒQƒbƒgì¬
+	//ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½œæˆ
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
 	ZeroMemory( &dsvd, sizeof(dsvd) );
 	dsvd.Format			= td.Format;
@@ -99,7 +99,7 @@ void CRenderer::Init()
 	m_ImmediateContext->OMSetRenderTargets( 1, &m_RenderTargetView, m_DepthStencilView );
 
 
-	// ƒrƒ…[ƒ|[ƒgÝ’è
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¨­å®š
 	D3D11_VIEWPORT vp;
 	vp.Width = (FLOAT)SCREEN_WIDTH;
 	vp.Height = (FLOAT)SCREEN_HEIGHT;
@@ -111,7 +111,7 @@ void CRenderer::Init()
 
 
 
-	// ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgÝ’è
+	// ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	D3D11_RASTERIZER_DESC rd; 
 	ZeroMemory( &rd, sizeof( rd ) );
 	rd.FillMode = D3D11_FILL_SOLID; 
@@ -127,7 +127,7 @@ void CRenderer::Init()
 
 
 
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒgÝ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	D3D11_BLEND_DESC blendDesc;
 	ZeroMemory( &blendDesc, sizeof( blendDesc ) );
 	blendDesc.AlphaToCoverageEnable = FALSE;
@@ -148,7 +148,7 @@ void CRenderer::Init()
 
 
 
-	// [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgÝ’è
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	ZeroMemory( &depthStencilDesc, sizeof( depthStencilDesc ) );
 	depthStencilDesc.DepthEnable = TRUE;
@@ -156,18 +156,18 @@ void CRenderer::Init()
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	depthStencilDesc.StencilEnable = FALSE;
 
-	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &m_DepthStateEnable );//[“x—LŒøƒXƒe[ƒg
+	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &m_DepthStateEnable );//æ·±åº¦æœ‰åŠ¹ã‚¹ãƒ†ãƒ¼ãƒˆ
 
 	//depthStencilDesc.DepthEnable = FALSE;
 	depthStencilDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ZERO;
-	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &m_DepthStateDisable );//[“x–³ŒøƒXƒe[ƒg
+	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &m_DepthStateDisable );//æ·±åº¦ç„¡åŠ¹ã‚¹ãƒ†ãƒ¼ãƒˆ
 
 	m_ImmediateContext->OMSetDepthStencilState( m_DepthStateEnable, NULL );
 
 
 
 
-	// ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgÝ’è
+	// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	D3D11_SAMPLER_DESC samplerDesc;
 	ZeroMemory( &samplerDesc, sizeof( samplerDesc ) );
 	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -188,7 +188,7 @@ void CRenderer::Init()
 
 
 
-	// ’¸“_ƒVƒF[ƒ_¶¬
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
 	{
 		FILE* file;
 		long int fsize;
@@ -202,7 +202,7 @@ void CRenderer::Init()
 		m_D3DDevice->CreateVertexShader(buffer, fsize, NULL, &m_VertexShader);
 
 
-		// “ü—ÍƒŒƒCƒAƒEƒg¶¬
+		// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç”Ÿæˆ
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -223,7 +223,7 @@ void CRenderer::Init()
 
 
 
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_¶¬
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
 	{
 		FILE* file;
 		long int fsize;
@@ -242,7 +242,7 @@ void CRenderer::Init()
 
 
 
-	// ’è”ƒoƒbƒtƒ@¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	D3D11_BUFFER_DESC hBufferDesc;
 	hBufferDesc.ByteWidth = sizeof(XMMATRIX);
 	hBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -276,16 +276,16 @@ void CRenderer::Init()
 
 
 
-	// “ü—ÍƒŒƒCƒAƒEƒgÝ’è
+	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 	m_ImmediateContext->IASetInputLayout( m_VertexLayout );
 
-	// ƒVƒF[ƒ_Ý’è
+	// ã‚·ã‚§ãƒ¼ãƒ€è¨­å®š
 	m_ImmediateContext->VSSetShader( m_VertexShader, NULL, 0 );
 	m_ImmediateContext->PSSetShader( m_PixelShader, NULL, 0 );
 
 
 
-	// ƒ‰ƒCƒg‰Šú‰»
+	// ãƒ©ã‚¤ãƒˆåˆæœŸåŒ–
 	LIGHT light;
 	light.Direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
 	light.Diffuse = COLOR(0.9f, 0.9f, 0.9f, 1.0f);
@@ -293,7 +293,7 @@ void CRenderer::Init()
 	SetLight(light);
 
 
-	// ƒ}ƒeƒŠƒAƒ‹‰Šú‰»
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«åˆæœŸåŒ–
 	MATERIAL material;
 	ZeroMemory( &material, sizeof(material) );
 	material.Diffuse = COLOR( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -306,7 +306,7 @@ void CRenderer::Init()
 
 void CRenderer::Uninit()
 {
-	// ƒIƒuƒWƒFƒNƒg‰ð•ú
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
 	if ( m_WorldBuffer )		m_WorldBuffer->Release();
 	if ( m_ViewBuffer )			m_ViewBuffer->Release();
 	if ( m_ProjectionBuffer )	m_ProjectionBuffer->Release();
@@ -328,7 +328,7 @@ void CRenderer::Uninit()
 
 void CRenderer::Begin()
 {
-	// ƒoƒbƒNƒoƒbƒtƒ@ƒNƒŠƒA
+	// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	float ClearColor[4] = { 0.0f, 0.5f, 0.0f, 1.0f };
 	m_ImmediateContext->ClearRenderTargetView( m_RenderTargetView, ClearColor );
 	m_ImmediateContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);

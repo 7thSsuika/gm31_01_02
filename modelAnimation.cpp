@@ -4,6 +4,7 @@
 
 
 
+
 void CModelAnimation::Draw()
 {
 	//CRenderer::SetVertexBuffers(m_VertexBuffer);
@@ -13,7 +14,7 @@ void CModelAnimation::Draw()
 
 void CModelAnimation::Draw(XMMATRIX& Matrix)
 {
-	DrawMesh(m_Scene->mRootNode, Matrix);
+	DrawMesh(m_Scene[currentScene]->mRootNode, Matrix);
 }
 
 void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
@@ -49,12 +50,12 @@ void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
 
 void CModelAnimation::Load(const char * FileName)
 {
-	this->m_Scene = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality);
-	m_MeshNum = m_Scene->mNumMeshes;
+	this->m_Scene[sceneCount] = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality);
+	m_MeshNum = m_Scene[sceneCount]->mNumMeshes;
 	m_Mesh = new MESH[m_MeshNum];
 	for (int m = 0; m < m_MeshNum; m++)
 	{
-		aiMesh* mesh = m_Scene->mMeshes[m];
+		aiMesh* mesh = m_Scene[sceneCount]->mMeshes[m];
 		VERTEX_3D* vertex = new VERTEX_3D[mesh->mNumVertices];
 		for (int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -64,7 +65,7 @@ void CModelAnimation::Load(const char * FileName)
 			
 			//vertex[i].TexCoord = XMFLOAT2(mesh->mTextureCoords[i]->x, mesh->mTextureCoords[i]->z);
 		}
-		// ���_�o�b�t�@����
+		// 頂点バッファ生成
 		{
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
@@ -91,7 +92,7 @@ void CModelAnimation::Load(const char * FileName)
 		}
 		m_Mesh[m].IndexNum = mesh->mNumFaces * 3;
 
-		// �C���f�b�N�X�o�b�t�@����
+		// インデックスバッファ生成
 		{
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
@@ -108,7 +109,19 @@ void CModelAnimation::Load(const char * FileName)
 		}
 		delete[] index;
 	}
+	sceneCount++;
+}
 
+void CModelAnimation::LoadAnim(const char * FileName)
+{
+	m_Scene[sceneCount] = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality);
+	sceneCount++;
+}
+
+void CModelAnimation::SetAnim(u_int animCount)
+{
+	if(animCount <= sceneCount)
+		currentScene = animCount;
 }
 
 void CModelAnimation::Unload()
@@ -119,12 +132,28 @@ void CModelAnimation::Unload()
 		m_Mesh[d].IndexBuffer->Release();
 	}
 	delete[] m_Mesh;
-	aiReleaseImport(m_Scene);
+	for(int i = sceneCount - 1; i >= 0; i--)
+		aiReleaseImport(m_Scene[sceneCount]);
 }
 
+//void CModelAnimation::Update(int Animation1, int Animation2, float Blend, int Frame);
+/*{
+	aiAnimation* animation1 = m_Scene[1]->mAnimations[0];
+	aiAnimation* animation2 = m_Scene[2]->mAnimations[0];
+	for (int c = 0; c < animation->mNumChannels; c++)
+	{
+		aiNodeAnim* nodeAnim1 = animation1->mChannels[c];
+		aiNodeAnim* nodeAnim2 = animation2->mChannels[c];
+		int f = Frame % nodeAnim->mNumRotationKeys;
+		m_NodeRotation[nodeAnim->mNodeName.C_Str()] = 球面線形補間 aiQuaternion::Interpolate
+		f = Frame % nodeAnim->mNumPositionKeys;
+		m_NodePosition[nodeAnim->mNodeName.C_Str()] = 線形補間
+	}
+}*/
 void CModelAnimation::Update(int Frame)
 {
-	aiAnimation* animation = m_Scene->mAnimations[0];
+
+	aiAnimation* animation = m_Scene[currentScene]->mAnimations[0];
 	for (int c = 0; c < animation->mNumChannels; c++)
 	{
 		aiNodeAnim* nodeAnim = animation->mChannels[c];

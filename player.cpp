@@ -19,12 +19,13 @@ void Player::Init()
 {
 	m_Position = XMFLOAT3(0.0f, 1.0f, -5.0f);
 	m_Rotation = XMFLOAT3(0.0f, 3.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.20f, 0.20f, 0.20f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	model = new CModel();
 	model->Load("asset/miku_01.obj");
 
 	animModel = new CModelAnimation();
-	animModel->Load("asset/Model/me2.fbx");
+	animModel->Load("asset/Model/monkeyStand.fbx");
+	animModel->LoadAnim("asset/Model/monkeyKing_walk.fbx");
 }
 
 void Player::Uninit()
@@ -47,7 +48,14 @@ void Player::Update()
 	{
 		f -= 0.03;
 	}
-
+	if (CInput::GetKeyTrigger('B'))
+	{
+		animModel->SetAnim(1);
+	}
+	if (CInput::GetKeyTrigger('C'))
+	{
+		animModel->SetAnim(0);
+	}
 	//m_Rotation.y += 0.062f;
 
 	//m_Position.x += -cosf(m_Rotation.y) * f;
@@ -66,7 +74,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	// ƒ}ƒgƒŠƒNƒXİ’è
+	// ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	XMMATRIX world;
 	world = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	world *= XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);

@@ -15,7 +15,7 @@ void CTexture::Load(const char *FileName)
 	unsigned int	size;
 
 
-	// ƒwƒbƒ_“Ç‚İ‚İ
+	// ãƒ˜ãƒƒãƒ€èª­ã¿è¾¼ã¿
 	FILE* file;
 	file = fopen(FileName, "rb");
 	assert(file);
@@ -23,7 +23,7 @@ void CTexture::Load(const char *FileName)
 	fread(header, sizeof(header), 1, file);
 
 
-	// ‰æ‘œƒTƒCƒYæ“¾
+	// ç”»åƒã‚µã‚¤ã‚ºå–å¾—
 	width = header[13] * 256 + header[12];
 	height = header[15] * 256 + header[14];
 	depth = header[16];
@@ -41,10 +41,10 @@ void CTexture::Load(const char *FileName)
 
 	size = width * height * bpp;
 
-	// ƒƒ‚ƒŠŠm•Û
+	// ãƒ¡ãƒ¢ãƒªç¢ºä¿
 	image = (unsigned char*)new unsigned char[size];
 
-	// ‰æ‘œ“Ç‚İ‚İ
+	// ç”»åƒèª­ã¿è¾¼ã¿
 	fread(image, size, 1, file);
 
 	// R<->B
