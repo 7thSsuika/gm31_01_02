@@ -14,7 +14,7 @@ void CModelAnimation::Draw()
 
 void CModelAnimation::Draw(XMMATRIX& Matrix)
 {
-	DrawMesh(m_Scene[currentScene]->mRootNode, Matrix);
+	DrawMesh(m_Scene[0]->mRootNode, Matrix);
 }
 
 void CModelAnimation::DrawMesh(aiNode * Node, XMMATRIX& Matrix)
